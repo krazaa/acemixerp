@@ -1,0 +1,70 @@
+@php($i = $index)
+@php($l = is_array($line) ? $line : [])
+<div class="line-row border rounded p-2 mb-2 bg-light-subtle">
+    <div class="row g-2 align-items-end">
+        @include('inventory::brands._select', ['index' => $i, 'selectedBrandId' => $l['brand_id'] ?? null])
+        @include('inventory::origins._select', ['index' => $i, 'selectedOriginId' => $l['origin_id'] ?? null])
+        <div class="col-md-3">
+            <label class="form-label small mb-1">Item <span class="text-danger">*</span></label>
+            <select name="lines[{{ $i }}][item_id]" class="form-select form-select-sm" required>
+                <option value="">— Select item —</option>
+                @foreach($items as $it)
+                    <option value="{{ $it->id }}" @selected((int) ($l['item_id'] ?? 0) === $it->id)>
+                        {{ $it->code }} — {{ $it->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label small mb-1">Unit</label>
+            <select name="lines[{{ $i }}][unit_id]" class="form-select form-select-sm">
+                <option value="">—</option>
+                @foreach($units as $u)
+                    <option value="{{ $u->id }}" @selected((int) ($l['unit_id'] ?? 0) === $u->id)>{{ $u->code }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small mb-1">Qty <span class="text-danger">*</span></label>
+            <input name="lines[{{ $i }}][quantity]" type="number" step="0.01" min="0.01"
+                   class="form-control form-control-sm po-qty" value="{{ $l['quantity'] ?? '' }}" required>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small mb-1">Unit Price <span class="text-danger">*</span></label>
+            <input name="lines[{{ $i }}][unit_price]" type="number" step="0.01" min="0"
+                   class="form-control form-control-sm po-price" value="{{ $l['unit_price'] ?? '' }}" required>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label small mb-1">Tax %</label>
+            <input name="lines[{{ $i }}][tax_rate]" type="number" step="0.01" min="0" max="100"
+                   class="form-control form-control-sm po-tax" value="{{ $l['tax_rate'] ?? '' }}">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small mb-1">WHT %</label>
+            <input name="lines[{{ $i }}][wht_tax_rate]" type="number" step="0.000001" min="0" max="100"
+                   class="form-control form-control-sm @error('lines.'.$i.'.wht_tax_rate') is-invalid @enderror"
+                   value="{{ $l['wht_tax_rate'] ?? '' }}">
+            @error('lines.'.$i.'.wht_tax_rate')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small mb-1">Required</label>
+            <input name="lines[{{ $i }}][required_date]" type="date"
+                   class="form-control form-control-sm" value="{{ $l['required_date'] ?? '' }}">
+        </div>
+        <div class="col-md-1 text-end">
+            <button type="button" class="btn btn-sm btn-outline-danger"
+                    onclick="poRemoveLine(this)" title="Remove this line">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row g-2 mt-1">
+        <div class="col-12">
+            <label class="form-label small mb-1">Specification</label>
+            <input name="lines[{{ $i }}][specification]"
+                   class="form-control form-control-sm" maxlength="500"
+                   value="{{ $l['specification'] ?? '' }}">
+        </div>
+    </div>
+    <input type="hidden" name="lines[{{ $i }}][rfq_line_id]" value="{{ $l['rfq_line_id'] ?? '' }}">
+</div>

@@ -1,0 +1,12 @@
+{
+    "Procurement": true,
+    "Test": true,
+    "Test\u00e7": true,
+    "Sales": true,
+    "Inventory": true,
+    "Manufacturing": true,
+    "Hr": true,
+    "Expense": true,
+    "FixedAssets": true,
+    "Reports": true
+}
