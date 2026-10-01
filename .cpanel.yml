@@ -1,0 +1,19 @@
+---
+deployment:
+  tasks:
+    - export APPPATH=/home2/clrigate/jms
+    - export PUBLICPATH=/home2/clrigate/
+
+    - /bin/cp -R app $APPPATH/
+    - /bin/cp -R bootstrap $APPPATH/
+    - /bin/cp -R config $APPPATH/
+    - /bin/cp -R database $APPPATH/
+    - /bin/cp -R modules $APPPATH/
+    - /bin/cp -R resources $APPPATH/
+    - /bin/cp -R routes $APPPATH/
+
+    - /bin/cp artisan $APPPATH/
+    - /bin/cp composer.json $APPPATH/
+    - /bin/cp composer.lock $APPPATH/
+
+    - /bin/cp -R public/* $PUBLICPATH/
